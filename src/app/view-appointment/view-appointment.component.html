@@ -1,0 +1,236 @@
+<div class="Page">
+    <div class="Card">
+      <div class="row">
+        <div class="col">
+          <label class="Title">
+            All Appointments
+          </label>
+        </div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col">
+        <form (ngSubmit)="searchApp();">
+            <div class="input-group">
+              <input type="number" class="form-control" placeholder="Search" name="searchID" [(ngModel)]="searchID">
+              <div class="input-group-btn">
+                <button class="btn btn-default" type="submit">
+                  <i class="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+      
+      
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="h1">Sl NO</th>
+            <th class="h2">Name</th>
+            <th class="h3">Address</th>
+            <th class="h4">City</th>
+            <th class="h5">Package</th>
+            <th class="h6">Trainer Preference</th>
+            <th class="h7">Phone</th>
+          </tr>
+        </thead>
+
+        <tbody *ngIf="appts?.length>0">
+          <tr *ngFor="let appt of appts;">
+            <td>{{ appt.id }}</td>
+            <td>{{ appt.firstname }} {{ appt.lastname }}</td>
+            
+            <td>{{ appt.streetaddress }}</td>
+            <td> {{ appt.city }} </td>
+            <td>{{ appt.packages }}</td>
+            <td>{{ appt.trainerpreference }}</td>
+            <td>{{ appt.phonenumber }}</td>
+            <td>
+              
+              <button class="btn btn-warning"  (click)="deleteApp(appt, 'n');" data-toggle="modal" data-target="#DeleteModal">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </td>
+            <td>
+              <button
+                type="button"
+                class="btn btn-warning"
+                (click)="editAppt(appt)"
+                data-toggle="modal" data-target="#EditModal"
+                style="margin-left: 20px;"
+  
+              >
+                <span class="glyphicon glyphicon-edit"></span>
+              </button>
+              </td>
+               
+                <div id="DeleteModal" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+                
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                      
+                      <div class="modal-body">
+                        <p>Are you sure you want to delete?</p>
+                        <button type="button" id="delButton" class="btn btn-warning" (click)="deleteApp(this.appt, 'y');" value="yes">Delete</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                
+                  </div>
+                </div>
+                <div id="EditModal" class="modal fade" role="dialog">
+                  <div class="modal-dialog">
+  
+                      <!-- Modal content-->
+                      <div class="modal-content">
+                      
+                      <div class="modal-body">
+                          
+                              <div class="Card">
+                                  <label class="Title">Update Appointment</label>
+                                  
+                                  <form [formGroup]="editForm" (ngSubmit)="updApp()">
+                                    <div class="form-group">
+                                        <label for="exampleInputfirstname">First Name</label>
+                                        <div class="errorspace">{{this.errorfirst}}</div>
+                                        <input type="text" class="form-control" formControlName="firstname" placeholder="First Name" required>
+                                        <small class="form-text text-muted"
+                                            *ngIf="editForm.controls.firstname.touched && editForm.controls.firstname.errors?.required">
+                                            Please enter your first name.!
+                                        </small>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <label for="exampleInputlastname">Last Name</label>
+                                        <div class="errorspace">{{this.errorlast}}</div>
+                                        <input type="text" class="form-control" formControlName="lastname" placeholder="Last Name">
+                                        <small class="form-text text-muted"
+                                            *ngIf="editForm.controls.lastname.touched && editForm.controls.lastname.errors?.required">
+                                            Please enter your last name.!
+                                        </small>
+                                    </div>
+                                
+                                
+                                    <div class="form-group">
+                                        <label for="exampleInputphonenumber">Phone Number</label>
+                                        <div class="errorspace">{{this.errorphone}}</div>
+                                        <input type="number" class="form-control" formControlName="phonenumber" placeholder="Phone Number" minlength="10" maxlength="10">
+                                        <small class="form-text text-muted"
+                                            *ngIf="editForm.controls.phonenumber.touched && editForm.controls.phonenumber.errors?.required">
+                                            Please enter your phone number.!
+                                        </small>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <label for="exampleInputemail">Email</label>
+                                        <div class="errorspace">{{this.erroremail}}</div>
+                                        <input type="email" class="form-control" formControlName="email" placeholder="Email">
+                                        <small class="form-text text-muted"
+                                            *ngIf="editForm.controls.email.touched && editForm.controls.email.errors?.required">
+                                            Please enter your email.!
+                                        </small>
+                                        <small class="form-text text-muted"
+                                            *ngIf="editForm.controls.email.touched && editForm.controls.email.errors?.email">
+                                            Enter the valid email .!
+                                        </small>
+                                    </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputStreetAddress">Street Address</label>
+                                                <div class="errorspace">{{this.errorstreet}}</div>
+                                                <input type="text" class="form-control" formControlName="streetaddress" placeholder="Street Address" required>
+                                                <small class="form-text text-muted"
+                                                    *ngIf="editForm.controls.firstname.touched && editForm.controls.firstname.errors?.required">
+                                                    Please enter your streetaddress.!
+                                                </small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputCity">City</label>
+                                                <div class="errorspace">{{this.errorcity}}</div>
+                                                <input type="text" class="form-control" formControlName="city" placeholder="City" required>
+                                                <small class="form-text text-muted"
+                                                    *ngIf="editForm.controls.firstname.touched && editForm.controls.firstname.errors?.required">
+                                                    Please enter your city.!
+                                                </small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputState">State</label>
+                                                <div class="errorspace">{{this.errorstate}}</div>
+                                                <input type="text" class="form-control" formControlName="state" placeholder="State" required>
+                                                <small class="form-text text-muted"
+                                                    *ngIf="editForm.controls.firstname.touched && editForm.controls.firstname.errors?.required">
+                                                    Please enter your State.!
+                                                </small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputCountry">Country</label>
+                                                <div class="errorspace">{{this.errorcountry}}</div>
+                                                <input type="text" class="form-control" formControlName="country" placeholder="Country" required>
+                                                <small class="form-text text-muted"
+                                                    *ngIf="editForm.controls.firstname.touched && editForm.controls.firstname.errors?.required">
+                                                    Please enter your Country.!
+                                                </small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputPincode">Pincode</label>
+                                                <div class="errorspace">{{this.errorpincode}}</div>
+                                                <input type="number" class="form-control" formControlName="pincode" placeholder="Pincode" minlength="6" maxlength="6">
+                                                <small class="form-text text-muted"
+                                                    *ngIf="editForm.controls.phonenumber.touched && editForm.controls.phonenumber.errors?.required">
+                                                    Please enter your Pincode.!
+                                                </small>
+                                            </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPincode">Change Trainer Preference </label>
+                                            <div style="color: orange;">Input should contain only 'male' , 'female' or 'none'</div>
+                                            <input type="text" class="form-control" formControlName="trainerpreference" list="trainerpreference" > 
+                                            <datalist id="trainerpreference">
+                                              <option value="male"></option>
+                                              <option value="female"></option>
+                                              <option value="none"></option>
+                                            </datalist>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPincode">Change Physiotherapy Status</label>
+                                            <div style="color: orange;">Input should contain only 'yes' , 'no'  or 'maybe'</div>
+                                            <input type="text" class="form-control" formControlName="physiotherapist" list="physiotherapist">
+                                            <datalist id="physiotherapist">
+                                              <option value="yes"></option>
+                                              <option value="no"></option>
+                                              <option value="maybe"></option>
+                                            </datalist>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPincode">Change Package</label>
+                                            <input type="radio" class="form-control" formControlName="packages" value="500">One time package - Code 500
+                                            <input type="radio" class="form-control" formControlName="packages" value="10000"> Monthly package - Code 10000
+                                            <input type="radio" class="form-control" formControlName="packages" value="50000"> Half Yearly package - Code 50000
+                                            <input type="radio" class="form-control" formControlName="packages" value="90000"> Yearly package - Code 90000
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPrice">Change Quoted Price</label><br>
+                                            <label for="inr">Inr</label>
+                                            <input type="number" class="form-control" formControlName="inr" [(ngModel)]="inr" value={{this.packages}}>
+                                            <label for="inr">Paisa</label>
+                                            <input type="number" class="form-control" formControlName="paisa" [(ngModel)]="paisa" >
+                                            
+                                        </div> 
+                                        <button type="submit" class="btn btn-lg btn-block btn-warning">Submit</button>
+                                
+                                </form>
+                              </div>
+                              </div>
+                      
+                      </div>
+  
+    </div>
+  </div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+  

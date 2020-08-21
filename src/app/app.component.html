@@ -1,0 +1,28 @@
+<nav class="Navbar">
+  <button routerLink="/landing" class="NavButtonTop logo">
+    <img src="../favicon.ico" alt="" />
+  </button>
+  <div class="placecenter">
+    Fitness App
+  </div>
+</nav>
+
+<nav class="Navbar">
+  <button class="NavButtonTop" routerLink="/landing-page">Home</button>
+  <button class="NavButtonTop" routerLink="/place-fitness-trainer-appointment">Place App</button>
+  <button class="NavButtonTop" routerLink="/view-appointment">View App</button>
+  <button class="NavButtonTop" routerLink="/contact-us">Contact Us</button>
+</nav>
+<div class="row">
+  <div class="sidenav col-md-2">
+    <button class="NavButton" routerLink="/landing-page">Home</button>
+    <button class="NavButton" routerLink="/place-fitness-trainer-appointment">Place App</button>
+    <button class="NavButton" routerLink="/view-appointment">View App</button>
+    <button class="NavButton" routerLink="/contact-us">Contact Us</button>
+  </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-9">
+    <router-outlet> </router-outlet>
+  </div>
+</div>
+
